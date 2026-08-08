@@ -25,8 +25,8 @@ DEFAULT_CLASSES = [
 # ---- Image / training hyperparameters ----
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
-EPOCHS_HEAD = 10        # training only the new classification head
-EPOCHS_FINE_TUNE = 10   # fine-tuning the top layers of the base model
+EPOCHS_HEAD = 5      # training only the new classification head
+EPOCHS_FINE_TUNE = 5   # fine-tuning the top layers of the base model
 LEARNING_RATE_HEAD = 1e-3
 LEARNING_RATE_FINE_TUNE = 1e-5
 VALIDATION_SPLIT = 0.15
@@ -34,4 +34,4 @@ TEST_SPLIT = 0.15
 SEED = 42
 
 # ---- Model ----
-BASE_MODEL_NAME = "EfficientNetB0"  # options: EfficientNetB0, MobileNetV2, ResNet50
+BASE_MODEL_NAME = "MobileNetV2"  # options: EfficientNetB0, MobileNetV2, ResNet50
