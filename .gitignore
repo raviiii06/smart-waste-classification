@@ -1,0 +1,6 @@
+venv/
+data/
+__pycache__/
+*.pyc
+app/static/uploads/*.jpg
+app/static/uploads/*.png

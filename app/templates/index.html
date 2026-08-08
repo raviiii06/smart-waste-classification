@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Waste Classification</title>
+<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<meta name="theme-color" content="#2e7d32">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}");
+  }
+</script>
+<style>
+    body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: #f0f5f1;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+    }
+    .container {
+        max-width: 560px;
+        width: 100%;
+        margin: 40px 20px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        padding: 32px;
+    }
+    h1 {
+        color: #2e7d32;
+        font-size: 1.5rem;
+        margin-bottom: 4px;
+    }
+    p.subtitle {
+        color: #666;
+        margin-top: 0;
+        margin-bottom: 24px;
+    }
+    .upload-box {
+        border: 2px dashed #a5d6a7;
+        border-radius: 10px;
+        padding: 24px;
+        text-align: center;
+        background: #f6fbf6;
+    }
+    input[type="file"] {
+        margin-bottom: 16px;
+    }
+    button {
+        background: #2e7d32;
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+    button:hover {
+        background: #256428;
+    }
+    .result {
+        margin-top: 28px;
+        padding: 20px;
+        background: #f6fbf6;
+        border-radius: 10px;
+        border: 1px solid #c8e6c9;
+    }
+    .result img {
+        max-width: 100%;
+        border-radius: 8px;
+        margin-bottom: 16px;
+    }
+    .label {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #1b5e20;
+        text-transform: capitalize;
+    }
+    .confidence {
+        color: #555;
+        margin-bottom: 12px;
+    }
+    .tip {
+        background: #fff8e1;
+        border-left: 4px solid #ffb300;
+        padding: 10px 14px;
+        border-radius: 6px;
+        margin-top: 12px;
+        font-size: 0.95rem;
+    }
+    ul.top3 {
+        list-style: none;
+        padding: 0;
+        margin: 12px 0 0 0;
+    }
+    ul.top3 li {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 0.9rem;
+        text-transform: capitalize;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>♻️ Smart Waste Classification</h1>
+        <p class="subtitle">Upload a photo of an item and the model will classify its waste category.</p>
+
+        <div class="upload-box">
+            <form method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" accept="image/*" required>
+                <br>
+                <button type="submit">Classify</button>
+            </form>
+        </div>
+
+        {% if result %}
+        <div class="result">
+            <img src="{{ url_for('static', filename=image_path) }}" alt="Uploaded image">
+            <div class="label">{{ result.label }}</div>
+            <div class="confidence">Confidence: {{ result.confidence }}%</div>
+
+            <ul class="top3">
+                {% for name, prob in result.top3 %}
+                <li><span>{{ name }}</span><span>{{ prob }}%</span></li>
+                {% endfor %}
+            </ul>
+
+            <div class="tip">🗑️ {{ result.tip }}</div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
